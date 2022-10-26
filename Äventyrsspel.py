@@ -34,3 +34,6 @@ class Person():
 Huvudperson = Person("Andreas", 1, "Man", "Kungavakt")
  
 print(Huvudperson)
+
+
+print("hejsan")
