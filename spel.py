@@ -43,18 +43,24 @@ class Person():
 #Tror att den här är helt onödig just nu, men kommer säkert användas senare. 
 
 class Monster():
-    def __init__(self, monster_styrka):
+    def __init__(self,styrka):
         self.monster_HP = 100
-        self.monster_styrka = monster_styrka
+        self.styrka = styrka
+
+namn = input("Skriv ditt namn --> ")
+
+Huvudperson = Person(f"{namn}", 1, "Man", "Kungavakt")
+monster1 = Monster(5)
 
 def strid(Huvudperson, Monster):
     print("Striden pågår i full gång")
-    if Huvudperson.styrka == Monster.monster_styrka:
+    if Huvudperson.styrka == Monster.styrka:
         Monster.monster_HP - Huvudperson.styrka
-        Huvudperson.HP - Monster.monster_styrka
+        Huvudperson.HP - Monster.styrka
         print("Det blev lika yänni")
-    elif Huvudperson.styrka < Monster.monster_styrka:
-        Huvudperson.HP - Monster.monster_styrka
+
+    elif Huvudperson.styrka < Monster.styrka:
+        Huvudperson.HP - Monster.styrka
         print('''
         
         aboooo, orka wallah, jag taggar
@@ -62,22 +68,33 @@ def strid(Huvudperson, Monster):
         Monstret vann
         
         ''')
-    elif Huvudperson.styrka > Monster.monster_styrka:
-        Monster.monster_hp - Huvudperson.styrka
+
+    elif Huvudperson.styrka > Monster.styrka:
+        Monster.monster_HP - Huvudperson.styrka
         print('''
         
-        Asså grabben, du trodde du va något va? Exaxt stick härifrån!
+        Asså grabben, du trodde du va något va? Exaxt yähnni stick härifrån!
         
         Spelaren vann
 
         ''')
 
+    elif Huvudperson.ryggsäck == "Drakglas":
+        Monster.monster_HP - Huvudperson.styrka
+        print(''''
+        
+        Asså grabben, du trodde du va något va? Exaxt yähnni stick härifrån!
+        
+        Spelaren vann
+        
+        ''')
+
     return Huvudperson
 
-namn = input("Skriv ditt namn --> ")
 
-Huvudperson = Person(f"{namn}", 1, "Man", "Kungavakt")
-monster1 = Monster(5)
+
+
+
 
 
 print(input(f'''
@@ -166,11 +183,13 @@ while True:
     monster1.styrka = monster1.styrka + 1
 
     spelar_plats = "Kingslanding"
-    print('------------------------------------\nOm du vill avbryta under spelets gång skriv "end"\n')
+    print('------------------------------------\nOm du vill avbryta under spelets gång skriv "end"\nOm du vill se dina stats skriv "stats"\n')
     print('Möjliga destinationer: "Highgarden", "Riverrun", "Eyrie", "Casterly Rock", "Sunspear", "Winterfell", "Kingslanding"')
     var_resa = input("\nVart vill du resa? Du kan välja mellan alternativen ovan! \n-->")
-    print(f"""
-    
+
+   
+    if var_resa in platser:  
+        print(f'''
 ------------------------------------
 Du väljer att resa till {var_resa}
             ()          
@@ -181,38 +200,67 @@ Du väljer att resa till {var_resa}
     /'~|/ ~' `\<\>  ;  
     "  |      /  |     
        "      "  "    
-------------------------------------
-
-""")
-    time.sleep(3)
-    if var_resa in platser:
+------------------------------------''')    
+        time.sleep(3)
         spelar_plats = var_resa
         print(f"Du har rest till {spelar_plats}\n")
-        if spelar_plats == var_monster:
-            print("""
-            
-            -aboo...jävla monster orka wallah
-            
-            -du tror du är något va? Gahba nu ska vi se vad du går för yänni
-            
-            """)
 
-            Huvudperson = strid(Huvudperson, monster1)
+        if spelar_plats == var_monster:
+            if monster1.monster_HP == 0 or Huvudperson.ryggsäck == "Drakglas":
+                print("Du van spelet, bra gjort!")
+                break
+            else:
+                print("""
+                
+                -aboo...jävla monster orka wallah
+                
+                -du tror du är något va? Gahba nu ska vi se vad du går för yänni
+                
+                """)
+
+                Huvudperson = strid(Huvudperson, monster1)
+                if monster1.monster_HP == 0:
+                    print('''
+                    
+                    Exakt yänni, ställ dig inte upp shomme.
+                    
+                    Spelaren vann spelet 
+
+                    ''')
+                    break
+                else:
+                    print(f"Efter stiden har du {Huvudperson.HP} HP och monstret har {monster1.monster_HP} HP")
+                    continue
 
         elif spelar_plats == var_drakglas:
             print("Du hittade drakglas. Detta läggs i din ryggsäck")
             Huvudperson.ryggsäck.append("Drakglas")
+
         elif spelar_plats == var_kista:
-            print("Du hittade en kista!")
+            print("Du hittade en kista!\n")
+
         else:
-            print("Det fanns inget här!")
+            print("Det fanns inget här!\n")
+
     elif var_resa == spelar_plats:
-        print("Du är redan på denna plats. Skriv något annat")
+        print("Du är redan på denna plats. Skriv något annat\n")
         continue
+
     elif var_resa == "end":
         print("Du har valt att avsluta programmet")
         break
+
+    elif var_resa == "stats":
+        print(f'''
+        HP: {Huvudperson.HP}
+        Styrka: {Huvudperson.styrka} av Huset {Huvudperson.hus}
+        Nivå: {Huvudperson.nivå}
+        Ryggsäck: {Huvudperson.ryggsäck} Vapensstyrka: {vapen_styrka}
+        ''')
+        time.sleep(6)
     elif var_resa == "var":
         print(f"Du är vid {spelar_plats}")
     else:
-        print("loppen brytssss")
+
+        print("loppen borgir")
+
