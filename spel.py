@@ -2,8 +2,6 @@ import time
 import random
 
 
-
-
 list_Huset = ["Baratheon", "Stark", "Lannister", "Tyrell", "Martell", "Tully", "Arryn", "Targaryen"]     #Vilken familj (kungarike) du föds in i väljs här!
 
 huset = random.choice(list_Huset)  
