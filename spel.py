@@ -45,10 +45,24 @@ class Monster():
         self.monster_HP = 100
         self.styrka = styrka
 
+def item_styrka(Item):
+    if Item == "Äpple":
+        print("tom")
+
+class Item ():
+    def __init__(self):
+        self.HP = 2
+        self.styrka = item_styrka(Item)
+
+
 namn = input("Skriv ditt namn --> ")
 
 Huvudperson = Person(f"{namn}", 1, "Man", "Kungavakt")
 monster1 = Monster(5)
+Äpple = Item
+Tårta = Item
+Päron = Item
+Monter = Item
 
 def strid(Huvudperson, Monster):
     print("Striden pågår i full gång")
@@ -87,12 +101,7 @@ def strid(Huvudperson, Monster):
         
         ''')
 
-    return Huvudperson
-
-
-
-
-
+    return Huvudperson, Monster #bug: skriver inte ut korrekt Hp efter strid 
 
 
 print(input(f'''
@@ -166,25 +175,55 @@ Du måste välja mellan 1, 2 eller 3.
 vapen_namn = input(f"Du kan välja ett namn för ditt {vilket_vapen} \n")
 print(f'Ditt vapen heter nu {vapen_namn}')
 
-print(f'Ditt vapen "{vapen_namn}" har styrkan {vapen_styrka}. \nDin totala styrka är "????"\n')
+print(f'Ditt vapen "{vapen_namn}" har styrkan {vapen_styrka}. \nDin totala styrka är {vapen_styrka + Huvudperson.styrka}\n')
 
 
 
 platser = ["Highgarden", "Riverrun", "Eyrie", "Casterly Rock", "Sunspear", "Winterfell", "Kingslanding"] #möjliga platser att resa till. 
 
-var_drakglas = random.choice(platser)            #bug: slumpar en ny plats för monster, kista och drakglass varje gång. 
-var_kista = random.choice(platser)
+var_fällor = random.choice(platser)
+var_drakglas = random.choice(platser)             
+i = 0
 
 while True:
 
+    i = i + 1
+    if i % 2 == 0:
+        Huvudperson.nivå = Huvudperson.nivå + 1
+        vilket_nivå = int(input(f'''
+        Du har gått upp till nivå {Huvudperson.nivå}! Du kan nu välja mellan tre olika förmål att lägga till i din ryggsäck.
+
+        1. Äpple 2. Tårta  3. Päron 
+        
+        -->
+        '''))
+
+        if vilket_nivå == 1:
+            print("\nDu valde Äpple")
+            Huvudperson.ryggsäck.append("Äpple")
+
+        elif vilket_nivå == 2:
+            print("\nDu valde Tårta")
+            Huvudperson.ryggsäck.append("Tårta")
+
+        elif vilket_nivå == 3:
+            print("\nDu valde päron")
+            Huvudperson.ryggsäck.append("Päron")
+
+        else:
+            print("Nivå boorgit")
+
+    else:
+        print("Nivå booorgir")
+    
     var_monster = random.choice(platser)
+    var_kista = random.choice(platser) #fyller ingen funktion just nu
     monster1.styrka = monster1.styrka + 1
 
     spelar_plats = "Kingslanding"
     print('------------------------------------\nOm du vill avbryta under spelets gång skriv "end"\nOm du vill se dina stats skriv "stats"\n')
     print('Möjliga destinationer: "Highgarden", "Riverrun", "Eyrie", "Casterly Rock", "Sunspear", "Winterfell", "Kingslanding"')
     var_resa = input("\nVart vill du resa? Du kan välja mellan alternativen ovan! \n-->")
-
    
     if var_resa in platser:  
         print(f'''
@@ -204,7 +243,7 @@ Du väljer att resa till {var_resa}
         print(f"Du har rest till {spelar_plats}\n")
 
         if spelar_plats == var_monster:
-            if monster1.monster_HP == 0 or Huvudperson.ryggsäck == "Drakglas":
+            if monster1.monster_HP == 0 or "Drakglas" in Huvudperson.ryggsäck:
                 print("Du van spelet, bra gjort!")
                 break
             else:
@@ -229,6 +268,9 @@ Du väljer att resa till {var_resa}
                 else:
                     print(f"Efter stiden har du {Huvudperson.HP} HP och monstret har {monster1.monster_HP} HP")
                     continue
+        elif spelar_plats == var_fällor:
+            Huvudperson.HP = Huvudperson.HP - 25
+            print(f"Du gick i en fälla. Du har nu {Huvudperson.HP}HP")
 
         elif spelar_plats == var_drakglas:
             print("Du hittade drakglas. Detta läggs i din ryggsäck")
@@ -253,7 +295,8 @@ Du väljer att resa till {var_resa}
         HP: {Huvudperson.HP}
         Styrka: {Huvudperson.styrka} av Huset {Huvudperson.hus}
         Nivå: {Huvudperson.nivå}
-        Ryggsäck: {Huvudperson.ryggsäck} Vapensstyrka: {vapen_styrka}
+        Ryggsäck: {Huvudperson.ryggsäck} - {vapen_namn} , Vapensstyrka: {vapen_styrka}
+        Totalsyrka: {vapen_styrka + Huvudperson.styrka}
         ''')
         time.sleep(6)
     elif var_resa == "var":
