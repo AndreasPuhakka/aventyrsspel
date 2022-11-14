@@ -1,6 +1,9 @@
 import time 
 import random
+import colorama
+from colorama import Back, Fore, Style
 
+#-----------------------------------------------------------------------------
 
 list_Huset = ["Baratheon", "Stark", "Lannister", "Tyrell", "Martell", "Tully", "Arryn", "Targaryen"]     #Vilken familj (kungarike) du föds in i väljs här!
 
@@ -19,10 +22,33 @@ def välj_styrka(huset):
     return styrka
     #Väljer din styrka beroende på ditt hus
 
+def xp(nivå,xp):
+    if nivå == 1:
+        xp == 100
+        return xp
+    elif nivå == 2:
+        xp == 125
+        return xp
+    elif nivå == 3:
+        xp == 150
+        return xp
+    elif nivå == 4:
+        xp == 175
+        return xp
+    elif nivå == 5:
+        xp == 200
+        return xp
+    elif nivå == 6:
+        xp == 225
+        return xp
+    else:
+        print("funktionen borrgirxp")
+
 class Person():
     def __init__(self, namn, nivå, kön, roll):
         self.namn = namn
         self.nivå = nivå
+        self.xp = 0
         self.kön = kön 
         self.roll = roll
         self.HP = 100
@@ -36,75 +62,111 @@ class Person():
         return f"Du är {self.namn} nivå [{self.nivå}] av huset {self.hus} och har styrkan [{self.styrka}]"
 #Gör så att man ser ett string när man printar Huvudperson istället för ett konstigt medelande
 
-    def get_name(self, namn):
-        self.namn = namn
-#Tror att den här är helt onödig just nu, men kommer säkert användas senare. 
+def nivå_check(Huvudperson,xp,xp_tot,nivå):
+    if xp == xp(nivå,xp):
+        Huvudperson.nivå =+ 1
+        print(f"lvl up {Huvudperson.nivå}")
+    else:
+        print("fel")
+    
 
 class Monster():
     def __init__(self,styrka):
-        self.monster_HP = 100
+        self.HP = 100
         self.styrka = styrka
 
 def item_styrka(Item):
     if Item == "Äpple":
         print("tom")
 
-class Item ():
-    def __init__(self):
-        self.HP = 2
-        self.styrka = item_styrka(Item)
+class Item_vapen ():
+    def __init__(self, namn, styrka):
+        self.namn = namn
+        self.styrka = styrka
 
+class Item_konsumerbart ():
+    def __init__(self, namn, beskrivning, HP):
+        self.namn = namn
+        self.beskrivning = beskrivning
+        self.HP = HP
+
+Valyrianskt_svärd = Item_vapen("Valyrianskt svärd", 10)
+bra_pilbåge = Item_vapen("Bra pilbåge", 7)
+bra_yxa = Item_vapen("Bra yxa", 8)
+yay_drakglas = Item_vapen("Drakglas", 0)
+
+
+äpple = Item_konsumerbart("Äpple", "Ett vanligt äpple" , 10)
+tårta = Item_konsumerbart("Tårta", "En vanlig tårta", 15)
+monter = Item_konsumerbart("Monster Energidricka", "Tillverkades av ingen annan än Andreas av Huset Puhakka" , 30)
 
 namn = input("Skriv ditt namn --> ")
 
 Huvudperson = Person(f"{namn}", 1, "Man", "Kungavakt")
 monster1 = Monster(5)
-Äpple = Item
-Tårta = Item
-Päron = Item
-Monter = Item
 
-def strid(Huvudperson, Monster):
-    print("Striden pågår i full gång")
-    if Huvudperson.styrka == Monster.styrka:
-        Monster.monster_HP - Huvudperson.styrka
-        Huvudperson.HP - Monster.styrka
-        print("Det blev lika yänni")
+#-----------------------------------------------------------------------------
 
-    elif Huvudperson.styrka < Monster.styrka:
-        Huvudperson.HP - Monster.styrka
-        print('''
+def strid(Huvudperson, Monster, vapen_styrka):
+    print("Nu är det fajt")
+    time.sleep(3)
+    if Huvudperson.styrka == monster1.styrka:
+        Huvudperson.HP = Huvudperson.HP - monster1.styrka
+        monster1.HP = monster1.HP - Huvudperson.styrka - vapen_styrka
+        print(f'''
         
-        aboooo, orka wallah, jag taggar
-        
-        Monstret vann
+        Det blev lika, båda tog lite skada
+
+        HP efter strid:
+        Monster: {monster1.HP}
+        {namn}: {Huvudperson.HP}
         
         ''')
 
-    elif Huvudperson.styrka > Monster.styrka:
-        Monster.monster_HP - Huvudperson.styrka
-        print('''
+    elif Huvudperson.styrka > monster1.styrka:
+        monster1.HP = monster1.HP - Huvudperson.styrka - vapen_styrka
+        print(f'''
         
-        Asså grabben, du trodde du va något va? Exaxt yähnni stick härifrån!
-        
-        Spelaren vann
+        {namn} av Huset {huset} vann striden
 
-        ''')
-
-    elif Huvudperson.ryggsäck == "Drakglas":
-        Monster.monster_HP - Huvudperson.styrka
-        print(''''
-        
-        Asså grabben, du trodde du va något va? Exaxt yähnni stick härifrån!
-        
-        Spelaren vann
+        HP efter strid:
+        Monster: {monster1.HP}
+        {namn}: {Huvudperson.HP}
         
         ''')
 
+    elif Huvudperson.styrka < monster1.styrka:
+        Huvudperson.HP = Huvudperson.HP - monster1.styrka
+        print(f'''
+        
+        {namn} av Huset {huset} förlorade striden
+
+        HP efter strid:
+        Monster: {monster1.HP}
+        {namn}: {Huvudperson.HP}
+        
+        ''')
+
+    else:
+        print("funktionen borrrgirtridit")
+    time.sleep(3)
+    
     return Huvudperson, Monster #bug: skriver inte ut korrekt Hp efter strid 
 
+#-----------------------------------------------------------------------------
 
-print(input(f'''
+def visa_instruktioner():
+    print('''
+    
+    (Game Of Thrones inspererat)
+
+    Spelet går ut på att vinna
+    Du kan vinna genom att antingen besegra monstret eller att nå nivå 10. 
+    
+    ''')
+    return print
+
+print(input(Fore.GREEN+f'''
 {Huvudperson}
 Klicka [ENTER] för att forstätta'''))
 
@@ -177,7 +239,7 @@ print(f'Ditt vapen heter nu {vapen_namn}')
 
 print(f'Ditt vapen "{vapen_namn}" har styrkan {vapen_styrka}. \nDin totala styrka är {vapen_styrka + Huvudperson.styrka}\n')
 
-
+#-----------------------------------------------------------------------------
 
 platser = ["Highgarden", "Riverrun", "Eyrie", "Casterly Rock", "Sunspear", "Winterfell", "Kingslanding"] #möjliga platser att resa till. 
 
@@ -186,42 +248,13 @@ var_drakglas = random.choice(platser)
 i = 0
 
 while True:
-
-    i = i + 1
-    if i % 2 == 0:
-        Huvudperson.nivå = Huvudperson.nivå + 1
-        vilket_nivå = int(input(f'''
-        Du har gått upp till nivå {Huvudperson.nivå}! Du kan nu välja mellan tre olika förmål att lägga till i din ryggsäck.
-
-        1. Äpple 2. Tårta  3. Päron 
-        
-        -->
-        '''))
-
-        if vilket_nivå == 1:
-            print("\nDu valde Äpple")
-            Huvudperson.ryggsäck.append("Äpple")
-
-        elif vilket_nivå == 2:
-            print("\nDu valde Tårta")
-            Huvudperson.ryggsäck.append("Tårta")
-
-        elif vilket_nivå == 3:
-            print("\nDu valde päron")
-            Huvudperson.ryggsäck.append("Päron")
-
-        else:
-            print("Nivå boorgit")
-
-    else:
-        print("Nivå booorgir")
     
     var_monster = random.choice(platser)
     var_kista = random.choice(platser) #fyller ingen funktion just nu
     monster1.styrka = monster1.styrka + 1
 
     spelar_plats = "Kingslanding"
-    print('------------------------------------\nOm du vill avbryta under spelets gång skriv "end"\nOm du vill se dina stats skriv "stats"\n')
+    print('------------------------------------\nOm du vill avbryta under spelets gång skriv "end"\nOm du vill se dina stats skriv "stats"\nOm du vill se instruktioner skriv "Instruktioner"')
     print('Möjliga destinationer: "Highgarden", "Riverrun", "Eyrie", "Casterly Rock", "Sunspear", "Winterfell", "Kingslanding"')
     var_resa = input("\nVart vill du resa? Du kan välja mellan alternativen ovan! \n-->")
    
@@ -243,20 +276,12 @@ Du väljer att resa till {var_resa}
         print(f"Du har rest till {spelar_plats}\n")
 
         if spelar_plats == var_monster:
-            if monster1.monster_HP == 0 or "Drakglas" in Huvudperson.ryggsäck:
+            if monster1.HP == 0 or "Drakglas" in Huvudperson.ryggsäck:
                 print("Du van spelet, bra gjort!")
                 break
             else:
-                print("""
-                
-                -aboo...jävla monster orka wallah
-                
-                -du tror du är något va? Gahba nu ska vi se vad du går för yänni
-                
-                """)
-
-                Huvudperson = strid(Huvudperson, monster1)
-                if monster1.monster_HP == 0:
+                Huvudperson = strid(Huvudperson, monster1, vapen_styrka)
+                if monster1.HP == 0:
                     print('''
                     
                     Exakt yänni, ställ dig inte upp shomme.
@@ -266,7 +291,6 @@ Du väljer att resa till {var_resa}
                     ''')
                     break
                 else:
-                    print(f"Efter stiden har du {Huvudperson.HP} HP och monstret har {monster1.monster_HP} HP")
                     continue
         elif spelar_plats == var_fällor:
             Huvudperson.HP = Huvudperson.HP - 25
@@ -299,9 +323,13 @@ Du väljer att resa till {var_resa}
         Totalsyrka: {vapen_styrka + Huvudperson.styrka}
         ''')
         time.sleep(6)
+
+    elif var_resa == "Instruktioner":
+        visa_instruktioner()
     elif var_resa == "var":
         print(f"Du är vid {spelar_plats}")
     else:
 
         print("loppen borgir")
 
+#-----------------------------------------------------------------------------
